@@ -1,0 +1,5 @@
+-----------------------------
+| cchess: chess engine in C |
+-----------------------------
+
+build: gcc cchess.c -o cchess
