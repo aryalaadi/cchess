@@ -2,4 +2,6 @@
 | cchess: chess engine in C |
 -----------------------------
 
-build: gcc cchess.c -o cchess
+build: $ ./buildscript
+
+written in C11 with GNU extentions, licensed GPL3.  
