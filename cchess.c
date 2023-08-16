@@ -19,13 +19,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-enum Type {
-	King,
-	Queen,
-	Bishop, 
-	Knight, 
-	Rook, 
-	Pawn 	
+enum Piece {
+	None = 0,
+	King = 1,
+	Queen = 2,
+	Bishop = 3, 
+	Knight = 4, 
+	Rook = 5, 
+	Pawn = 6,	
+	
+	White = 8, 
+	Black = 16
 };
 
 enum State {
@@ -35,79 +39,45 @@ enum State {
 	Play
 };
 
-enum Player {
-	White, 
-	Black
-};
-
-struct Posititon {
-	int x; // 0-7 (a-b) 
-	int y; // 0-7 (1-8)
-};
-
-struct Piece {
-	enum Type type; 
-	enum Player player;
-	struct Posititon position;
+enum Color {
+	A,
+	B
 };
 
 struct GameState {
-	enum Player current;
+	enum Color current;
 	enum State state;
 	int MoveCount; 
 };
 
-void SetDefault(struct Piece *board) {
-	for (int i=1; i<=32; i++) {
-		// White Pawns
-		if (i>7&&i<16) {
-			board[i].type = Pawn;
-			board[i].player = White;
-			board[i].position.y = 1; 
-			board[i].position.x = 8-i;
-		}	
-		// Black Pawns	
-		if (i>23) {
-			board[i].type = Pawn;
-			board[i].player = Black; 
-			board[i].position.y = 6;
-			board[i].position.x = 32-i;
-		}
-		// White Pieces 
-		if (i<8) {
-			board[i].player = White;
-			board[i].position.y = 0;
-			board[i].position.x = i-1;
-		}
-		// Black Pieces 
-		if (i>15&&i<24) {
-			board[i].player = Black;
-			board[i].position.y = 7;
-			board[i].position.x = 32-i; 
-		}
-	}	
+void SetDefault(enum Piece *board) {
+	board[0] = Rook | Black; 
+	board[1] = Knight | Black;
+	board[2] = Bishop | Black;
+	board[3] = Queen | Black;
+	board[4] = King | Black;
+	board[5] = Bishop | Black;
+	board[6] = Knight | Black;
+	board[7] = Rook | Black;
+	
+	for (int i=0; i<8; i++) {
+		board[8+i] = Pawn | Black;
+	}
+	for (int i=0; i<8; i++) {
+		board[47+i] = Pawn | White;
+	}
 
-	// Remaning Piece types 
-	board[1].type = Rook;
-	board[8].type = Rook;
-	board[2].type = Knight; 
-	board[7].type = Knight;
-	board[3].type = Bishop;
-	board[6].type = Bishop;
-	board[4].type = Queen; 
-	board[5].type = King;
-
-	board[17].type = Rook;
-	board[24].type = Rook;
-	board[18].type = Knight; 
-	board[23].type = Knight; 
-	board[19].type = Bishop;
-	board[22].type = Bishop;
-	board[20].type = Queen;
-	board[21].type = King;	
+	board[56] = Rook | White;
+	board[57] = Knight | White;
+	board[58] = Bishop | White;
+	board[59] = Queen | White;
+	board[60] = King | White;
+	board[61] = Bishop | White;
+	board[62] = Knight | White;
+	board[63] = Rook | White;
 }
 
-DisplayBoard(struct Piece *board) {
+void DisplayBoard(enum Piece *board) {
 	// ???	
 }
 
@@ -118,7 +88,7 @@ int main(void) {
 	gamestate.state = Play;
 	gamestate.MoveCount = 0;
 
-	struct Piece *board = malloc(sizeof(struct Piece)*32);  
+	enum Piece *board = calloc(0, sizeof(enum Piece)*64);  
 	SetDefault(board);
 	DisplayBoard(board);
 }
