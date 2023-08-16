@@ -20,16 +20,16 @@
 #include <stdlib.h>
 
 enum Piece {
-	None = 0,
-	King = 1,
-	Queen = 2,
-	Bishop = 3, 
-	Knight = 4, 
-	Rook = 5, 
-	Pawn = 6,	
+	None = 8,
+	King = 9,
+	Queen = 10,
+	Bishop = 11, 
+	Knight = 12, 
+	Rook = 13, 
+	Pawn = 14,	
 	
-	White = 8, 
-	Black = 16
+	White = 32, 
+	Black = 64
 };
 
 enum State {
@@ -39,13 +39,8 @@ enum State {
 	Play
 };
 
-enum Color {
-	A,
-	B
-};
-
 struct GameState {
-	enum Color current;
+	enum Piece current;
 	enum State state;
 	int MoveCount; 
 };
@@ -64,7 +59,7 @@ void SetDefault(enum Piece *board) {
 		board[8+i] = Pawn | Black;
 	}
 	for (int i=0; i<8; i++) {
-		board[47+i] = Pawn | White;
+		board[48+i] = Pawn | White;
 	}
 
 	board[56] = Rook | White;
@@ -78,7 +73,18 @@ void SetDefault(enum Piece *board) {
 }
 
 void DisplayBoard(enum Piece *board) {
-	// ???	
+	for (int i = 0; i<64; i++) {
+		if (i%8==0) {
+			printf("\n┏━━┓┏━━┓┏━━┓┏━━┓┏━━┓┏━━┓┏━━┓┏━━┓\n"); 
+		}
+
+		if (board[i] != 0) {
+			printf("┃%d┃", board[i]);
+		}	
+		else if (board[i] == 0) {
+			printf("┃  ┃", board[i]);
+		}	
+	}	
 }
 
 int main(void) {
@@ -88,7 +94,7 @@ int main(void) {
 	gamestate.state = Play;
 	gamestate.MoveCount = 0;
 
-	enum Piece *board = calloc(0, sizeof(enum Piece)*64);  
+	enum Piece *board = calloc(64, sizeof(enum Piece));  
 	SetDefault(board);
 	DisplayBoard(board);
 }
