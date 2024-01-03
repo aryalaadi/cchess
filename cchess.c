@@ -19,6 +19,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// TODO:
+// #include <MoveValid.h>
+// #include <CCtimer.h>
+
 enum Piece {
 	None = 8,
 	King = 9,
@@ -36,6 +40,7 @@ enum State {
 	Check, 
 	CheckMate,
 	StaleMate,
+	Invalid,
 	Play
 };
 
@@ -72,6 +77,7 @@ void SetDefault(enum Piece *board) {
 	board[63] = Rook | White;
 }
 
+// TODO: notate the board better
 void DisplayBoard(enum Piece *board) {
 	for (int i = 0; i<64; i++) {
 		if (i%8==0) {
@@ -82,9 +88,22 @@ void DisplayBoard(enum Piece *board) {
 			printf("┃%d┃", board[i]);
 		}	
 		else if (board[i] == 0) {
-			printf("┃  ┃", board[i]);
+			printf("┃  ┃");
 		}	
 	}	
+}
+
+void MoveValid(int from, int to, enum Piece *board, struct GameState *gamestate) {
+	// TODO:
+	// Check what piece is on board[from];
+	// pass the validity check to a sub function {Piece}Valid() function in Valid.c
+	// gamestate->state = {Piece}Valid(); 
+}
+
+void UpdateBoard(int from, int to, enum Piece *board) {
+	int tmp = board[from];
+	board[from] = 0;
+	board[to]= tmp;
 }
 
 int main(void) {
@@ -92,9 +111,35 @@ int main(void) {
 
 	gamestate.current = White;
 	gamestate.state = Play;
-	gamestate.MoveCount = 0;
+	gamestate.MoveCount = 1;
 
 	enum Piece *board = calloc(64, sizeof(enum Piece));  
 	SetDefault(board);
-	DisplayBoard(board);
+	
+	while (gamestate.state != CheckMate || gamestate.state != StaleMate) {
+		DisplayBoard(board);
+		printf("%d> ", gamestate.current);
+		int from, to; 
+		// FIXME: panics on EOF
+		scanf("%d %d", &from, &to);
+
+		// TODO: start a timer. 
+
+		if (/*MoveValid(piece, from, to, board, &gamestate)*/0==0) { 
+			UpdateBoard(from, to, board);
+		}
+		else {
+			break;
+		}	
+		
+		gamestate.MoveCount+=1;	
+		if (gamestate.MoveCount % 2 == 0) {
+			gamestate.current = Black;
+		}		
+		else {
+			gamestate.current = White;
+		}
+	
+	}
+	return 0;
 }
