@@ -1,3 +1,0 @@
-#!/bin/sh
-
-cc -Wall -Wextra -std=gnu11 cchess.c -o cchess

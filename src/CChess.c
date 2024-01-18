@@ -19,9 +19,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// TODO:
-// #include <MoveValid.h>
-// #include <CCtimer.h>
+#include <MoveValid.h>
+#include <CCtimer.h>
 
 enum Piece {
 	None = 8,
@@ -120,8 +119,10 @@ int main(void) {
 		DisplayBoard(board);
 		printf("%d> ", gamestate.current);
 		int from, to; 
-		// FIXME: panics on EOF
-		scanf("%d %d", &from, &to);
+		
+		if (scanf("%d %d", &from, &to) == EOF) {
+			return EOF;
+		}
 
 		// TODO: start a timer. 
 
